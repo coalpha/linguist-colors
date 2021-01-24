@@ -1,8 +1,24 @@
+/* If you are writing usercss for this page, override the vars in here */
+
 :root {
-   --font-family-monospace: Menlo, Monaco, Consolas, monospace;
-   --grey-700: #444d56;
-   --grey-800: #2f363d;
-   --grey-900: #24292e;
+   --ffamily: Menlo, Monaco, Consolas, monospace;
+   --fsize: 16px;
+   --lang-width: 190px;
+   --lang-height: 50px;
+   --lang-margin: 10px;
+   transition: all ease-out .3s;
+
+   --bg: #24292e;
+   --fg: #fee;
+   --scroll-bg: #2f363d;
+   --scroll-fg: #444d56;
+}
+
+:root.light {
+   --bg: #fafbfc;
+   --fg: #24292e;
+   --scroll-bg: #f6f8fa;
+   --scroll-fg: #d1d5da;
 }
 
 html, body {
@@ -12,16 +28,17 @@ html, body {
 }
 
 html {
-   background-color: var(--grey-800);
-   color: #fee;
-   font-family: var(--font-family-monospace);
+   background-color: var(--bg);
+   color: var(--fg);
+   font-family: var(--ffamily);
+   font-size: var(--fsize);
    overflow: hidden;
 }
 
 body {
    text-align: center;
    overflow-y: auto;
-   scrollbar-color: var(--grey-700) var(--grey-900);
+   scrollbar-color: var(--scroll-fg) var(--scroll-bg);
 }
 
 lang-info {
@@ -29,9 +46,9 @@ lang-info {
    display: inline flex;
    align-items: center;
    flex-direction: column;
-   width: 190px;
-   height: 50px;
-   margin: 10px;
+   width: var(--lang-width);
+   height: var(--lang-height);
+   margin: var(--lang-margin);
 }
 
 .color {

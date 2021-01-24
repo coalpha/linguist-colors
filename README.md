@@ -1,8 +1,10 @@
 # linguist-colors
 
-![](misc/icon.png)
+<img src="misc/icon.png" width="100px"/>
 
-They disabled github pages on linguist.
+![](misc/preview_h500.png)
+
+Press any key to swap color schemes.
+
+They disabled github pages on linguist so I made my own.
 See [linguist/pull/5029](https://github.com/github/linguist/pull/5029#issuecomment-759345026).
-
-I quite like the page personally so I'm making my own.

@@ -1,4 +1,11 @@
 const d = document;
+const root = d.documentElement;
+
+const prefersLight = matchMedia("(prefers-color-scheme: light)").matches;
+
+if (prefersLight) {
+   root.className = "light";
+}
 
 const lang_req = new XMLHttpRequest();
 const yamlfile = "https://raw.githubusercontent.com/github/linguist/master/lib/linguist/languages.yml"
@@ -38,8 +45,12 @@ const lang_colors = Object.fromEntries(
       .map(([name, {color}]) => [name, color])
 );
 
-lang_names.sort();
+const lcstrcmp = (a, b) => a.toLowerCase() > b.toLowerCase();
+
+lang_names.sort(lcstrcmp);
 
 lang_names.forEach(
    name => d.body.appendChild(new LangInfo(name, lang_colors[name]))
 );
+
+onkeypress = k =>  root.className = root.className ? "" : "light";
