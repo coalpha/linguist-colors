@@ -1,27 +1,48 @@
 const d = document;
 const root = d.documentElement;
 
-const prefersLight = matchMedia("(prefers-color-scheme: light)").matches;
-
-if (prefersLight) {
-   root.className = "light";
+var lights = matchMedia("(prefers-color-scheme: light)").matches;
+const btnLights = d.getElementById("lights");
+function commitLights() {
+   if (lights) {
+      btnLights.innerText = "🌙";
+      btnLights.title = "Turn off the lights."
+      d.documentElement.className = "light";
+   } else {
+      btnLights.innerText = "☀️";
+      btnLights.title = "Turn on the lights."
+      d.documentElement.className = "";
+   }
 }
+commitLights();
+function toggleLights() {
+   lights ^= 1;
+   commitLights();
+}
+btnLights.addEventListener("click", toggleLights);
 
-const lang_req = new XMLHttpRequest();
+const reqLanguagesYml = new XMLHttpRequest();
 const yamlfile = "https://raw.githubusercontent.com/github/linguist/master/lib/linguist/languages.yml"
-lang_req.open("GET", yamlfile, false);
-lang_req.send(null);
+reqLanguagesYml.open("GET", yamlfile, false);
+reqLanguagesYml.send(null);
 
-if (lang_req.status !== 200) {
+if (reqLanguagesYml.status !== 200) {
    throw request.status;
 }
+
+const langData =
+   Object
+      .entries(jsyaml.load(reqLanguagesYml.responseText))
+      .map(([name, {color}]) => ({name, color}));
+
+langData.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase());
 
 class LangInfo extends HTMLElement {
    constructor(name, hex) {
       super();
+      this.className = "lang-info";
       if (hex == null) {
-         this.style.display = "none";
-         return;
+         LangInfo.noHex.push(this);
       }
 
       const title = d.createElement("span");
@@ -35,22 +56,36 @@ class LangInfo extends HTMLElement {
       this.appendChild(color);
    }
 }
-
+LangInfo.noHex = [];
 customElements.define("lang-info", LangInfo);
 
-const languages = jsyaml.load(lang_req.responseText);
-const lang_names = Object.keys(languages);
-const lang_colors = Object.fromEntries(
-   Object.entries(languages)
-      .map(([name, {color}]) => [name, color])
-);
+const langInfos = langData.map(({name, color}) => new LangInfo(name, color));
 
-const lcstrcmp = (a, b) => a.toLowerCase() > b.toLowerCase();
+var hidden = true;
+const bnHidden = d.getElementById("hidden")
+function commitHidden() {
+   if (hidden) {
+      bnHidden.innerText = "📃";
+      bnHidden.title = "Display colorless languages."
+      for (const info of LangInfo.noHex) {
+         info.style.display = "none";
+      }
+   } else {
+      bnHidden.innerText = "🎨";
+      bnHidden.title = "Only show colored languages."
+      for (const info of LangInfo.noHex) {
+         info.style.display = "";
+      }
+   }
+}
+commitHidden();
+function toggleHidden() {
+   hidden ^= 1;
+   commitHidden();
+}
+bnHidden.addEventListener("click", toggleHidden);
 
-lang_names.sort(lcstrcmp);
-
-lang_names.forEach(
-   name => d.body.appendChild(new LangInfo(name, lang_colors[name]))
-);
-
-onkeypress = k =>  root.className = root.className ? "" : "light";
+const divLangs = d.getElementById("langs")
+for (const info of langInfos) {
+   divLangs.appendChild(info);
+}

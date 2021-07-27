@@ -1,17 +1,19 @@
-/* If you are writing usercss for this page, override the vars in here */
-
 :root {
    --ffamily: Menlo, Monaco, Consolas, monospace;
    --fsize: 16px;
+
+   --control-space: 40px;
+
    --lang-width: 190px;
    --lang-height: 50px;
    --lang-margin: 10px;
-   transition: all ease-out .3s;
 
    --bg: #24292e;
    --fg: #fee;
    --scroll-bg: #2f363d;
    --scroll-fg: #444d56;
+
+   transition: all ease-out .3s;
 }
 
 :root.light {
@@ -41,6 +43,15 @@ body {
    scrollbar-color: var(--scroll-fg) var(--scroll-bg);
 }
 
+#controls {
+   height: var(--control-space);
+}
+
+#langs {
+   display: inline;
+   position: relative;
+}
+
 lang-info {
    border-radius: 3px;
    display: inline flex;
@@ -56,4 +67,21 @@ lang-info {
    width: 95%;
    border-radius: 420px;
    height: 10px;
+}
+
+button {
+   position: absolute;
+   background-color: var(--scroll-bg);
+   border: 2px solid var(--scroll-fg);
+   top: calc(0px - var(--control-space));
+}
+
+#lights {
+   --offset-right: 5px;
+   right: calc(var(--lang-margin) + var(--offset-right));
+}
+
+#hidden {
+   --offset-right: 55px;
+   right: calc(var(--lang-margin) + var(--offset-right));
 }
